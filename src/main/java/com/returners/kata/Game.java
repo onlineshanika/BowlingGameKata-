@@ -21,6 +21,11 @@ public class Game {
 //    5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/5 (21 rolls: 10 pairs of 5 and spare, with a final 5) = 10 frames * 15 points = 150
 
     private final List<BowlingAttempt> bowlingAttempts = new ArrayList<>();
+    private final int TEN = 10 ;
+    private final char DASH = '-' ;
+    private final char SLASH = '/' ;
+    private final char X = 'X' ;
+
 
     public int bowlingScore(String frames) {
 
@@ -37,8 +42,6 @@ public class Game {
         for (int i = 0; i < bowlingAttempts.size(); i++) {
             setTotals(i, bowlingAttempts.get(i));
         }
-        System.out.println("Total is : " + bowlingAttempts.get(bowlingAttempts.size() - 1).getScore());
-
         return bowlingAttempts.get(bowlingAttempts.size() - 1).getScore();
     }
 
@@ -48,7 +51,7 @@ public class Game {
         int thirdAttempt = frame.length() > 2 ? returnNumericValue(frame.charAt(2)) : 0;
 
         int secondAttempt = frame.length() > 1 ? returnNumericValue(frame.charAt(1)) : 0;
-        secondAttempt = (secondAttempt == -1) ? (10 - firstAttempt) : secondAttempt;
+        secondAttempt = (secondAttempt == -1) ? (TEN - firstAttempt) : secondAttempt;
 
         bowlingAttempt.setFirstAttempt(firstAttempt);
         bowlingAttempt.setSecondAttempt(secondAttempt);
@@ -60,11 +63,11 @@ public class Game {
 
     private int returnNumericValue(char character) {
         switch (character) {
-            case '-':
+            case DASH:
                 return 0;
-            case 'X':
-                return 10;
-            case '/':
+            case X:
+                return TEN;
+            case SLASH:
                 return -1;
             default:
                 return Character.getNumericValue(character);
@@ -79,14 +82,14 @@ public class Game {
             currentAttempt.setScore(currentAttempt.getScore() + previousAttempt.getScore());
         }
 
-        if (currentAttempt.getFirstAttempt() == 10) {
+        if (currentAttempt.getFirstAttempt() == TEN) {
             // If current frame is a strike
             int nextScore = 0;
 
             if ((currentIndex + 1) < bowlingAttempts.size()) {
                 BowlingAttempt nextAttempt = bowlingAttempts.get(currentIndex + 1);
 
-                if (nextAttempt.getFirstAttempt() == 10 && (currentIndex + 2) < bowlingAttempts.size()) {
+                if (nextAttempt.getFirstAttempt() == TEN && (currentIndex + 2) < bowlingAttempts.size()) {
                     BowlingAttempt oneAfterNextAttempt = bowlingAttempts.get(currentIndex + 2);
                     nextScore = nextAttempt.getFirstAttempt() + oneAfterNextAttempt.getFirstAttempt();
                 } else {
@@ -94,7 +97,7 @@ public class Game {
                 }
             }
             currentAttempt.setScore(currentAttempt.getScore() + nextScore);
-        } else if ((currentAttempt.getFirstAttempt() + currentAttempt.getSecondAttempt()) == 10) {
+        } else if ((currentAttempt.getFirstAttempt() + currentAttempt.getSecondAttempt()) == TEN) {
             // If current frame is a spare
             if ((currentIndex + 1) < bowlingAttempts.size()) {
                 BowlingAttempt nextAttempt = bowlingAttempts.get(currentIndex + 1);
